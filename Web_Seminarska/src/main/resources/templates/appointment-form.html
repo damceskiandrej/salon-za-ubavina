@@ -19,8 +19,10 @@
             <label for="timeSlot">Time Slot:</label>
             <select class="form-control" id="timeSlot" name="start_time">
                 <option th:each="timeSlot, stat : ${availableTimeSlots}"
-                        th:value="${timeSlot}"
-                        th:text="${timeSlot}"></option>
+                        th:value="${timeSlot.startTime}"
+                        th:text="${timeSlot.startTime}"
+                        th:disabled="${!timeSlot.isAvailable}">
+                </option>
             </select>
         </div>
 

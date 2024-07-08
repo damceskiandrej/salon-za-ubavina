@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import mk.ukim.finki.web_seminarska.model.Appointment;
 import mk.ukim.finki.web_seminarska.model.Salon;
 import mk.ukim.finki.web_seminarska.model.SalonUser;
+import mk.ukim.finki.web_seminarska.model.TimeSlot;
 import mk.ukim.finki.web_seminarska.repository.SalonUserRepository;
 import mk.ukim.finki.web_seminarska.service.AppointmentService;
 import mk.ukim.finki.web_seminarska.service.SalonService;
@@ -43,7 +44,7 @@ public class AppointmentController {
     @GetMapping("/appointments/{salonId}/add")
     public String showAdd(Model model, @PathVariable Long salonId) {
         LocalDateTime startDate = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
-        List<LocalDateTime> availableTimeSlots = appointmentService.getAvailableTimeSlots(salonId, startDate, 5);
+        List<TimeSlot> availableTimeSlots = appointmentService.getAvailableTimeSlots(salonId, startDate, 5);
 
         Salon salon = salonService.findById(salonId);
         model.addAttribute("availableTimeSlots", availableTimeSlots);
@@ -55,7 +56,7 @@ public class AppointmentController {
     }
 
     @PostMapping("/appointments/{salonId}/create")
-    public String create(@RequestParam LocalDateTime start_time,
+    public String create(@RequestParam("start_time") String start_time,
                          @PathVariable Long salonId,
                          @RequestParam List<Long> services,
                          Authentication authentication,
@@ -63,10 +64,11 @@ public class AppointmentController {
         SalonUser user = salonUserService.findByUsername(authentication.getName());
         Long userId = user.getId();
 
-        LocalDateTime endTime = start_time.plusHours(1); // Assuming appointments are 1 hour long
+        LocalDateTime startTime = LocalDateTime.parse(start_time);
+        LocalDateTime endTime = startTime.plusHours(1);
 
         try {
-            appointmentService.create(start_time, endTime, salonId, userId, services);
+            appointmentService.create(startTime, endTime, salonId, userId, services);
             return "redirect:/appointments";
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());

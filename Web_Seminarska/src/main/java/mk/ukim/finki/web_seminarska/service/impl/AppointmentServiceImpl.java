@@ -2,10 +2,7 @@ package mk.ukim.finki.web_seminarska.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import mk.ukim.finki.web_seminarska.model.Appointment;
-import mk.ukim.finki.web_seminarska.model.Salon;
-import mk.ukim.finki.web_seminarska.model.Uslugi;
-import mk.ukim.finki.web_seminarska.model.SalonUser;
+import mk.ukim.finki.web_seminarska.model.*;
 import mk.ukim.finki.web_seminarska.model.exceptions.InvalidAppointmentIdException;
 import mk.ukim.finki.web_seminarska.model.exceptions.InvalidSalonIdException;
 import mk.ukim.finki.web_seminarska.model.exceptions.InvalidSalonUserIdException;
@@ -71,18 +68,17 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<LocalDateTime> getAvailableTimeSlots(Long salonId, LocalDateTime startDate, int days) {
-        List<LocalDateTime> availableSlots = new ArrayList<>();
-        LocalTime start = LocalTime.of(9, 0); // Почеток на работното време
-        LocalTime end = LocalTime.of(17, 0); // Крај на работното време
+    public List<TimeSlot> getAvailableTimeSlots(Long salonId, LocalDateTime startDate, int days) {
+        List<TimeSlot> availableSlots = new ArrayList<>();
+        LocalTime start = LocalTime.of(9, 0);
+        LocalTime end = LocalTime.of(17, 0);
 
         for (int i = 0; i < days; i++) {
             LocalDateTime dateTime = startDate.plusDays(i).with(start);
             if (dateTime.getDayOfWeek() != DayOfWeek.SUNDAY) {
                 while (dateTime.toLocalTime().isBefore(end)) {
-                    if (isSlotAvailable(salonId, dateTime)) {
-                        availableSlots.add(dateTime);
-                    }
+                    boolean isAvailable = isSlotAvailable(salonId, dateTime);
+                    availableSlots.add(new TimeSlot(dateTime, isAvailable));
                     dateTime = dateTime.plusMinutes(30);
                 }
             }
@@ -90,6 +86,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         return availableSlots;
     }
+
 
     private boolean isSlotAvailable(Long salonId, LocalDateTime start) {
         List<Appointment> overlappingAppointments = appointmentRepository.findOverlappingAppointments(

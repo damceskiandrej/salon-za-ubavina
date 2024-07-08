@@ -20,6 +20,6 @@ public interface AppointmentService {
     Appointment delete(Long id);
     boolean checkAppointment(Appointment newAppointment);
 
-    List<LocalDateTime> getAvailableTimeSlots(Long salonId, LocalDateTime date, int i);
+    List<TimeSlot> getAvailableTimeSlots(Long salonId, LocalDateTime date, int i);
 
 }
