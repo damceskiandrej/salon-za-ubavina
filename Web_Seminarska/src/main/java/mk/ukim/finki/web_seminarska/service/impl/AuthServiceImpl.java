@@ -24,8 +24,4 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(InvalidUserCredentialsException::new);
     }
 
-    @Override
-    public List<SalonUser> findAll() {
-        return salonUserRepository.findAll();
-    }
 }

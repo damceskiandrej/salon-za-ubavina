@@ -8,5 +8,4 @@ public interface AuthService {
 
     SalonUser login(String username, String password);
 
-    List<SalonUser> findAll();
 }

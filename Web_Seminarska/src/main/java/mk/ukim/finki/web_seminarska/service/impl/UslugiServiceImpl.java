@@ -12,10 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 public class UslugiServiceImpl implements UslugiService {
     private final UslugiRepository uslugiRepository;
-    @Override
-    public Uslugi findById(Long id) {
-        return uslugiRepository.findById(id).orElseThrow(InvalidUslugiIdException::new);
-    }
 
     @Override
     public List<Uslugi> ListAllSalonServices() {

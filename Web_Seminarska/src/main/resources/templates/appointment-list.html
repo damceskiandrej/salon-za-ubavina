@@ -31,15 +31,10 @@
             <td th:text="${appointment.start_time}"></td>
             <td th:text="${appointment.end_time}"></td>
             <td th:text="${appointment.salon.name}"></td>
-            <td>
-                <ul>
-                    <li th:each="service : ${appointment.services}" th:text="${service.name}"></li>
-                </ul>
-            </td>
+            <td th:each="service : ${appointment.services}" th:text="${service.name}"></td>
         </tr>
         </tbody>
     </table>
 </div>
-
 </body>
 </html>

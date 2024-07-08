@@ -7,9 +7,6 @@ import java.util.List;
 
 public interface AppointmentService {
 
-    Appointment findById(Long id);
-
-    List<Appointment> ListAllAppointments();
 
     List<Appointment> listAppointmentsByUser(Long userId);
 
@@ -19,11 +16,6 @@ public interface AppointmentService {
                        Long users,
                        List<Long> services);
 
-    Appointment update(Long Id, LocalDateTime start_time,
-                       LocalDateTime end_time,
-                       Long salons,
-                       Long users,
-                       List<Long> services);
 
     Appointment delete(Long id);
     boolean checkAppointment(Appointment newAppointment);

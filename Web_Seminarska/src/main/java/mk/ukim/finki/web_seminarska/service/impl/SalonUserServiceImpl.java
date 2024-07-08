@@ -22,10 +22,7 @@ public class SalonUserServiceImpl implements SalonUserService {
     private final SalonUserRepository salonUserRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Override
-    public SalonUser findById(Long id) {
-       return salonUserRepository.findById(id).orElseThrow(InvalidSalonUserIdException::new);
-    }
+
 
     @Override
     public List<SalonUser> listAll() {

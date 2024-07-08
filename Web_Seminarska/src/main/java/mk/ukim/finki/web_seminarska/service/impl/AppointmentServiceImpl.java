@@ -33,15 +33,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final UslugiRepository salonServicesRepository;
     private final SalonUserRepository salonUserRepository;
 
-    @Override
-    public Appointment findById(Long id) {
-        return appointmentRepository.findById(id).orElseThrow(InvalidAppointmentIdException::new);
-    }
 
-    @Override
-    public List<Appointment> ListAllAppointments() {
-        return appointmentRepository.findAll();
-    }
 
     @Override
     public List<Appointment> listAppointmentsByUser(Long userId) {
@@ -62,23 +54,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
     }
 
-    @Override
-    public synchronized Appointment update(Long Id, LocalDateTime start_time, LocalDateTime end_time, Long salons, Long users, List<Long> services) {
-        Appointment appointment = appointmentRepository.findById(Id).orElseThrow(InvalidAppointmentIdException::new);
-        List<Uslugi> salonServicesList = salonServicesRepository.findAllById(services);
-        Salon salon = salonRepository.findById(salons).orElseThrow(InvalidSalonIdException::new);
-        SalonUser salonUserList = salonUserRepository.findById(users).orElseThrow(InvalidUslugiIdException::new);
-        appointment.setStart_time(start_time);
-        appointment.setEnd_time(end_time);
-        appointment.setSalon(salon);
-        appointment.setUser(salonUserList);
-        appointment.setServices(salonServicesList);
-        if (checkAppointment(appointment)) {
-            return appointment;
-        } else {
-            throw new RuntimeException("Обидете се повторно за 30 секунди");
-        }
-    }
+
 
     @Override
     public Appointment delete(Long id) {

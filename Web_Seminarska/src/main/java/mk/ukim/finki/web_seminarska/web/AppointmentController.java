@@ -45,13 +45,6 @@ public class AppointmentController {
         LocalDateTime startDate = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
         List<LocalDateTime> availableTimeSlots = appointmentService.getAvailableTimeSlots(salonId, startDate, 5);
 
-        List<String> formattedTimeSlots = availableTimeSlots.stream()
-                .map(slot -> slot.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " +
-                        slot.getDayOfMonth() + " " +
-                        slot.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " +
-                        slot.format(DateTimeFormatter.ofPattern("HH:mm")))
-                .collect(Collectors.toList());
-
         Salon salon = salonService.findById(salonId);
         model.addAttribute("availableTimeSlots", availableTimeSlots);
         model.addAttribute("salons", salonService.ListAllSalons());
@@ -61,10 +54,8 @@ public class AppointmentController {
         return "appointment-form";
     }
 
-
-
     @PostMapping("/appointments/{salonId}/create")
-    public String create(@RequestParam String start_time,
+    public String create(@RequestParam LocalDateTime start_time,
                          @PathVariable Long salonId,
                          @RequestParam List<Long> services,
                          Authentication authentication,
@@ -72,19 +63,16 @@ public class AppointmentController {
         SalonUser user = salonUserService.findByUsername(authentication.getName());
         Long userId = user.getId();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        LocalDateTime startTime = LocalDateTime.parse(start_time, formatter);
-        LocalDateTime endTime = startTime.plusHours(1); // Assuming appointments are 1 hour long
+        LocalDateTime endTime = start_time.plusHours(1); // Assuming appointments are 1 hour long
 
         try {
-            appointmentService.create(startTime, endTime, salonId, userId, services);
+            appointmentService.create(start_time, endTime, salonId, userId, services);
             return "redirect:/appointments";
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
             return "appointment-form";
         }
     }
-
 
     @PostMapping("/appointments/delete/{id}")
     public String delete(@PathVariable Long id) {

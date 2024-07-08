@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface SalonUserService extends UserDetailsService {
 
-    SalonUser findById(Long id);
 
     List<SalonUser> listAll();
 
