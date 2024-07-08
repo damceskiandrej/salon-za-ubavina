@@ -66,7 +66,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public boolean checkAppointment(Appointment newAppointment) {
         List<Appointment> overlappingAppointments = appointmentRepository.findOverlappingAppointments(
-                newAppointment.getStart_time(), newAppointment.getEnd_time());
+                newAppointment.getSalon().getId(), newAppointment.getStart_time(), newAppointment.getEnd_time());
         return overlappingAppointments.isEmpty();
     }
 
@@ -93,7 +93,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     private boolean isSlotAvailable(Long salonId, LocalDateTime start) {
         List<Appointment> overlappingAppointments = appointmentRepository.findOverlappingAppointments(
-                start, start.plusMinutes(30));
+                salonId, start, start.plusMinutes(30));
         return overlappingAppointments.isEmpty();
     }
 }

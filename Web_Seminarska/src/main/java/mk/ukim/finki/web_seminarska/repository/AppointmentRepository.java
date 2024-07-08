@@ -14,8 +14,9 @@ import java.util.List;
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("SELECT a FROM Appointment a WHERE (a.start_time < :end_time AND a.end_time > :start_time)")
-    List<Appointment> findOverlappingAppointments(@Param("start_time") LocalDateTime start_time, @Param("end_time") LocalDateTime end_time);
+    @Query("SELECT a FROM Appointment a WHERE a.salon.id = :salonId AND (a.start_time < :end_time AND a.end_time > :start_time)")
+    List<Appointment> findOverlappingAppointments(@Param("salonId") Long salonId, @Param("start_time") LocalDateTime start_time, @Param("end_time") LocalDateTime end_time);
+
 
     List<Appointment> findByUserId(Long userId);
 }
