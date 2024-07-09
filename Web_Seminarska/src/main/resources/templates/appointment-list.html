@@ -35,6 +35,11 @@
             <td th:text="${appointment.salon.name}"></td>
             <td th:each="service : ${appointment.services}" th:text="${service.name}"></td>
             <td th:each="service : ${appointment.services}" th:text="${service.price} + ' ден.'"></td>
+            <td>
+                <form th:method="post" th:action="@{'/appointments/delete/{id}' (id=${appointment.id})}">
+                    <button type="submit" class="btn btn-danger" >Откажи термин</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>

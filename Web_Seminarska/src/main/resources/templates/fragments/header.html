@@ -43,6 +43,9 @@
         <li class="nav-item">
           <a class="nav-link" th:href="@{'/salonServices'}">Услуги</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{'/appointments'}" sec:authorize="isAuthenticated()">Мои термини</a>
+        </li>
       </ul>
     </div>
 
