@@ -3,10 +3,7 @@ package mk.ukim.finki.web_seminarska.service.impl;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import mk.ukim.finki.web_seminarska.model.*;
-import mk.ukim.finki.web_seminarska.model.exceptions.InvalidAppointmentIdException;
-import mk.ukim.finki.web_seminarska.model.exceptions.InvalidSalonIdException;
-import mk.ukim.finki.web_seminarska.model.exceptions.InvalidSalonUserIdException;
-import mk.ukim.finki.web_seminarska.model.exceptions.InvalidUslugiIdException;
+import mk.ukim.finki.web_seminarska.model.exceptions.*;
 import mk.ukim.finki.web_seminarska.repository.AppointmentRepository;
 import mk.ukim.finki.web_seminarska.repository.SalonRepository;
 import mk.ukim.finki.web_seminarska.repository.UslugiRepository;
@@ -31,7 +28,6 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final SalonUserRepository salonUserRepository;
 
 
-
     @Override
     public List<Appointment> listAppointmentsByUser(Long userId) {
         return appointmentRepository.findByUserId(userId);
@@ -39,19 +35,19 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     @Transactional
-    public Appointment create(LocalDateTime start_time, LocalDateTime end_time, Long salonId, Long userId, List<Long> services) {
+    public synchronized Appointment create(LocalDateTime start_time, LocalDateTime end_time, Long salonId, Long userId, List<Long> services) {
         Salon salon = salonRepository.findById(salonId).orElseThrow(InvalidSalonIdException::new);
         SalonUser user = salonUserRepository.findById(userId).orElseThrow(InvalidSalonUserIdException::new);
         List<Uslugi> serviceList = salonServicesRepository.findAllById(services);
-        Appointment appointment = new Appointment(start_time, end_time, salon, user, serviceList);if (checkAppointment(appointment)) {
+        Appointment appointment = new Appointment(start_time, end_time, salon, user, serviceList);
+        if (!checkAppointment(appointment)) {
+            throw new RuntimeException("Терминот веќе е закажан. Обидете се повторно.");
+
+        } else {
             appointmentRepository.save(appointment);
             return appointment;
-        } else {
-            throw new RuntimeException("Обидете се повторно за 30 секунди");
         }
     }
-
-
 
     @Override
     public Appointment delete(Long id) {
@@ -79,18 +75,16 @@ public class AppointmentServiceImpl implements AppointmentService {
                 while (dateTime.toLocalTime().isBefore(end)) {
                     boolean isAvailable = isSlotAvailable(salonId, dateTime);
                     availableSlots.add(new TimeSlot(dateTime, isAvailable));
-                    dateTime = dateTime.plusMinutes(30);
+                    dateTime = dateTime.plusMinutes(60);
                 }
             }
         }
-
         return availableSlots;
     }
 
-
     private boolean isSlotAvailable(Long salonId, LocalDateTime start) {
         List<Appointment> overlappingAppointments = appointmentRepository.findOverlappingAppointments(
-                salonId, start, start.plusMinutes(30));
+                salonId, start, start.plusMinutes(60));
         return overlappingAppointments.isEmpty();
     }
 }
