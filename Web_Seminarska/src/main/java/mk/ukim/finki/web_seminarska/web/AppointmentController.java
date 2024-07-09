@@ -5,7 +5,6 @@ import mk.ukim.finki.web_seminarska.model.Appointment;
 import mk.ukim.finki.web_seminarska.model.Salon;
 import mk.ukim.finki.web_seminarska.model.SalonUser;
 import mk.ukim.finki.web_seminarska.model.TimeSlot;
-import mk.ukim.finki.web_seminarska.repository.SalonUserRepository;
 import mk.ukim.finki.web_seminarska.service.AppointmentService;
 import mk.ukim.finki.web_seminarska.service.SalonService;
 import mk.ukim.finki.web_seminarska.service.SalonUserService;
@@ -19,11 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.TextStyle;
 import java.util.List;
-import java.util.Locale;
-import java.util.stream.Collectors;
+
 
 @Controller
 @AllArgsConstructor

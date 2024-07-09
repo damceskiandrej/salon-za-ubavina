@@ -16,22 +16,25 @@
     <div th:replace="~{fragments/header.html}"></div>
 </div>
 <div class="container">
-    <h1 class="my-4">Термини</h1>
+    <h1 class="my-4">Вашите термини</h1>
     <table class="table table-striped">
         <thead>
         <tr>
             <th>Започнува</th>
             <th>Завршува</th>
             <th>Салон</th>
-            <th>Услуги</th>
+            <th>Услугa</th>
+            <th>Цена</th>
+
         </tr>
         </thead>
         <tbody>
         <tr th:each="appointment : ${appointments}">
-            <td th:text="${appointment.start_time}"></td>
-            <td th:text="${appointment.end_time}"></td>
+            <td th:value="${appointment.start_time}" th:text="${{#temporals.format(appointment.start_time, 'EEEE d MMMM HH:mm')}}"></td>
+            <td th:value="${appointment.end_time}"th:text="${{#temporals.format(appointment.end_time, 'EEEE d MMMM HH:mm')}}"></td>
             <td th:text="${appointment.salon.name}"></td>
             <td th:each="service : ${appointment.services}" th:text="${service.name}"></td>
+            <td th:each="service : ${appointment.services}" th:text="${service.price} + ' ден.'"></td>
         </tr>
         </tbody>
     </table>

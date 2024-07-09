@@ -20,7 +20,7 @@
             <select class="form-control" id="timeSlot" name="start_time">
                 <option th:each="timeSlot, stat : ${availableTimeSlots}"
                         th:value="${timeSlot.startTime}"
-                        th:text="${timeSlot.startTime}"
+                        th:text="${{#temporals.format(timeSlot.startTime, 'EEEE d MMMM HH:mm')}}"
                         th:disabled="${!timeSlot.isAvailable}">
                 </option>
             </select>
