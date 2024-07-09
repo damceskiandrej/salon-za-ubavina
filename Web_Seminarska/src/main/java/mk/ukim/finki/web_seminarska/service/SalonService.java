@@ -1,5 +1,6 @@
 package mk.ukim.finki.web_seminarska.service;
 
+import jakarta.servlet.http.HttpSession;
 import mk.ukim.finki.web_seminarska.model.Salon;
 import mk.ukim.finki.web_seminarska.model.enumerations.SalonType;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,5 +28,5 @@ public interface SalonService {
                  SalonType type, String description,
                  List<Long> services);
 
-    List<Salon> filter(String city, Long service);
+    List<Salon> filter(String city, Long service, HttpSession session);
 }
