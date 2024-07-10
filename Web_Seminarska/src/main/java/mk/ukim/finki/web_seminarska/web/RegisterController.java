@@ -17,11 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/register")
 public class RegisterController {
 
-    private final AuthService authService;
     private final SalonUserService userService;
 
-    public RegisterController(AuthService authService, SalonUserService userService) {
-        this.authService = authService;
+    public RegisterController(SalonUserService userService) {
         this.userService = userService;
     }
 

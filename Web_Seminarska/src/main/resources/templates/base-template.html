@@ -22,7 +22,6 @@
             height: 18px;
             margin-bottom: 2px;
         }
-
     </style>
 </head>
 <body style="background-color: #f6ebf6">
@@ -31,9 +30,7 @@
     <div th:replace="~{fragments/header.html}"></div>
 </div>
 
-
 <div style="float: right; padding: 20px 50px 0 0" >
-
     <a th:href="@{'/salons/add'}" class="add-item text-white btn btn-primary" sec:authorize="hasRole('ROLE_STAFF')" style="background-color: #a237a2; border-color: #a237a2">
         Додади салон
     </a>
@@ -89,26 +86,10 @@
     </div>
 </div>
 
-
-<!--<footer-->
-<!--        class="d-flex flex-column flex-md-row text-center text-md-start justify-content-center"-->
-<!--        style="background-color: #a237a2; height: 50px;" >-->
-<!--    <div class="text-white mb-3 mb-md-0 py-3">-->
-<!--        Copyright © 2024. All rights reserved.-->
-<!--    </div>-->
-<!--</footer>-->
-
-<footer
-        class="d-flex justify-content-center align-items-center text-center text-md-start"
-        style="background-color: #a237a2; height: 50px;">
+<footer class="d-flex justify-content-center align-items-center text-center text-md-start" style="background-color: #a237a2; height: 50px;">
     <div class="text-white">
         Copyright © 2024. All rights reserved.
     </div>
 </footer>
-
-
-
-
-
 </body>
 </html>

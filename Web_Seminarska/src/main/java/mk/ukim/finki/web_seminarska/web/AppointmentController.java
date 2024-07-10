@@ -74,13 +74,11 @@ public class AppointmentController {
 
     @PostMapping("/appointments/delete/{id}")
     public String delete(@PathVariable Long id, Model model) {
-        Appointment appointment = this.appointmentService.delete(id); // Добивање на избришаната резервација
+        Appointment appointment = this.appointmentService.delete(id);
 
-        // Освежување на временските слотови за истиот салон
         LocalDateTime startDate = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
         List<TimeSlot> availableTimeSlots = appointmentService.getAvailableTimeSlots(appointment.getSalon().getId(), startDate, 5);
 
-        // Додавање на обновените временски слотови во моделот
         model.addAttribute("availableTimeSlots", availableTimeSlots);
         model.addAttribute("salons", salonService.ListAllSalons());
         model.addAttribute("services", uslugiService.ListAllSalonServices());

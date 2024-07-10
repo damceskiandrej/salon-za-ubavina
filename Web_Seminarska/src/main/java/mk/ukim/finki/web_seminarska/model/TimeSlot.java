@@ -12,5 +12,4 @@ public class TimeSlot {
     private LocalDateTime startTime;
     private boolean isAvailable;
 
-
 }

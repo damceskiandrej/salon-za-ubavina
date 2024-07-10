@@ -22,8 +22,6 @@ public class SalonUserServiceImpl implements SalonUserService {
     private final SalonUserRepository salonUserRepository;
     private final PasswordEncoder passwordEncoder;
 
-
-
     @Override
     public List<SalonUser> listAll() {
         return salonUserRepository.findAll();

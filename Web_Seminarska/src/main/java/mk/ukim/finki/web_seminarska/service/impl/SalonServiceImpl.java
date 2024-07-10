@@ -80,28 +80,9 @@ public class SalonServiceImpl implements SalonService {
         return salon;
     }
 
-//    public List<Salon> filter(String city, Long service) {
-//        if (city != null && !city.isEmpty() && service != null) {
-//            Uslugi salonServices = salonServicesRepository.findById(service)
-//                    .orElseThrow(InvalidUslugiIdException::new);
-//            return salonRepository.findAllByCityAndServicesContaining(city, salonServices);
-//        }
-//        else if (city != null && !city.isEmpty() && service == null) {
-//            return salonRepository.findAllByCity(city);
-//        }
-//        else if (service != null && (city == null || city.isEmpty())) {
-//            Uslugi salonServices = salonServicesRepository.findById(service)
-//                    .orElseThrow(InvalidUslugiIdException::new);
-//            return salonRepository.findAllByServicesContaining(salonServices);
-//        }
-//        else {
-//            return salonRepository.findAll();
-//        }
-//    }
-
     @Override
     public List<Salon> filter(String city, Long service, HttpSession session) {
-        // Save the filter values in session
+
         session.setAttribute("selectedCity", city);
         session.setAttribute("selectedService", service);
 

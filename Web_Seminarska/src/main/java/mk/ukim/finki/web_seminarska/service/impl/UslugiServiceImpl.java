@@ -24,6 +24,4 @@ public class UslugiServiceImpl implements UslugiService {
         uslugiRepository.save(salonServices);
         return salonServices;
     }
-
-
 }

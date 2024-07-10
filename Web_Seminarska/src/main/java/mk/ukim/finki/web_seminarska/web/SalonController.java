@@ -29,39 +29,12 @@ public class SalonController {
     private final UslugiService salonServicesService;
     private final SalonUserService salonUserService;
 
-//    @GetMapping({"/"})
-//    public String listSalons(@RequestParam(required = false) String city,
-//                             @RequestParam(required = false) Long service,
-//                             HttpSession session,
-//                             Model model,
-//                             HttpSession session) {
-//        List<Salon> salons;
-//        if (city == null && service == null) {
-//            salons = this.salonService.ListAllSalons();
-//        } else {
-//            salons = this.salonService.filter(city, service);
-//            session.setAttribute("cityFilter", city);
-//            session.setAttribute("serviceFilter", service);
-//        }
-//        HashMap<Salon, String> images = new HashMap<>();
-//        salons.forEach(item -> {
-//            images.put(item, Base64.getEncoder().encodeToString(item.getImage()));
-//        });
-//        model.addAttribute("salons", salons);
-//        model.addAttribute("images", images);
-//        model.addAttribute("salonServices", salonServicesService.ListAllSalonServices());
-//        model.addAttribute("salonUsers", salonUserService.listAll());
-//        model.addAttribute("city", city);
-//        model.addAttribute("service", service);
-//        return "base-template";
-//    }
 @GetMapping("/")
 public String listSalons(@RequestParam(required = false) String city,
                          @RequestParam(required = false) Long service,
                          Model model,
                          HttpSession session) {
 
-    // Retrieve session attributes
     String selectedCity = (String) session.getAttribute("selectedCity");
     Long selectedService = (Long) session.getAttribute("selectedService");
 
@@ -89,7 +62,6 @@ public String listSalons(@RequestParam(required = false) String city,
     model.addAttribute("selectedCity", selectedCity);
     model.addAttribute("selectedService", selectedService);
 
-    // Build search label based on selected filters
     StringBuilder searchLabel = new StringBuilder("Filtered by ");
     if (city != null && !city.isEmpty()) {
         searchLabel.append("city: ").append(city);
